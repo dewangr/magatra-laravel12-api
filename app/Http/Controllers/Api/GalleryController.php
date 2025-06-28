@@ -18,7 +18,7 @@ class GalleryController extends Controller
     public function index()
     {
         //get all products
-        $galleries = Gallery::latest()->paginate(6);
+        $galleries = Gallery::latest()->get();
 
         //return collection of products as a resource
         return new GalleryResource(true, 'List Data Image in Gallery', $galleries);
