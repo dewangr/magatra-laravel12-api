@@ -18,7 +18,7 @@ class RsvpController extends Controller
     public function index()
     {
         //get all products
-        $rsvps = Rsvp::latest()->paginate(10);
+        $rsvps = Rsvp::latest()->get();
 
         //return collection of products as a resource
         return new RsvpResource(true, 'List Data Rsvp', $rsvps);

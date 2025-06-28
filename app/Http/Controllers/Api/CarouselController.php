@@ -18,7 +18,7 @@ class CarouselController extends Controller
     public function index()
     {
         //get all products
-        $carousels = Carousel::latest();
+        $carousels = Carousel::latest()->get();
 
         //return collection of products as a resource
         return new CarouselResource(true, 'List Data Image in Carousel', $carousels);
