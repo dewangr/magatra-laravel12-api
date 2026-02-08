@@ -34,16 +34,18 @@ class RsvpController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nama_tamu' => 'required',
-            'ucapan'    => 'required'
+            'ucapan'    => 'required',
+            'kehadiran' => 'nullable|in:0,1,2',
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->error(), 422);
+            return response()->json($validator->errors(), 422);
         }
 
         $rsvp = Rsvp::create([
             'nama_tamu'       => $request->nama_tamu,
             'ucapan'          => $request->ucapan,
+            'kehadiran'       => $request->kehadiran,
         ]);
 
         return new RsvpResource(true, 'Berhasil menambahkan data rsvp!', $rsvp);

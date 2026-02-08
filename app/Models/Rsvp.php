@@ -13,7 +13,8 @@ class Rsvp extends Model
      */
     protected $fillable = [
         'nama_tamu',
-        'ucapan'
+        'ucapan',
+        'kehadiran',
     ];
     
 }
