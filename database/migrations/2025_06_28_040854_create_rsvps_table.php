@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id');
             $table->string('nama_tamu');
             $table->text('ucapan');
-            $table->number_format('kehadiran');
+            $table->enum('kehadiran', ['0', '1', '2'])->nullable();
             $table->timestamps();
         });
     }
