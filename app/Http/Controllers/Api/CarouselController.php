@@ -21,7 +21,34 @@ class CarouselController extends Controller
         $carousels = Carousel::latest()->get();
 
         //return collection of products as a resource
-        return new CarouselResource(true, 'List Data Image in Carousel', $carousels);
+        return new CarouselResource(true, 'List Data Kehadiran Tamu', $carousels);
+    }
+
+    public function indexByOwner($ownerName)
+    {
+        //get all products
+        $carousels = Carousel::where('ownerName', $ownerName)->latest()->get();
+
+        //return collection of products as a resource
+        return new CarouselResource(true, 'List Data Kehadiran Tamu dari ' . $ownerName, $carousels);
+    }
+
+    public function indexByCeremonyType($ceremonyType)
+    {
+        //get all products
+        $carousels = Carousel::where('ceremonyType', $ceremonyType)->latest()->get();
+
+        //return collection of products as a resource
+        return new CarouselResource(true, 'List Data Kehadiran Tamu untuk Jenis Acara ' . $ceremonyType, $carousels);
+    }
+
+    public function indexByOwnerAndCeremonyType($ownerName, $ceremonyType)
+    {
+        //get all products
+        $carousels = Carousel::where('ceremonyType', $ceremonyType)->where('ownerName', $ownerName)->latest()->get();
+
+        //return collection of products as a resource
+        return new CarouselResource(true, 'List Data Kehadiran Tamu untuk ' . $ownerName . ' dan Jenis Acara ' . $ceremonyType, $carousels);
     }
 
     /**
@@ -33,23 +60,30 @@ class CarouselController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'ownerName' => 'required',
+            'ceremonyType' => 'required|in:0,1,2', // 0: Pawiwahan, 1: Mepandes, 2: Tigabulanan
+            'guestName' => 'required',
+            'guestMessage' => 'required',
+            'guestAttendance' => 'nullable|in:0,1,2',
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->error(), 422);
+            return response()->json($validator->errors(), 422);
         }
 
-        $image = $request->file('image');
-        $image->storeAs('carousels', $image->hashName());
-
         $carousel = Carousel::create([
-            'image'       => $image->hashName(),
+            'ownerName'       => $request->ownerName,
+            'ceremonyType'    => $request->ceremonyType,
+            'guestName'       => $request->guestName,
+            'guestMessage'    => $request->guestMessage,
+            'guestAttendance' => $request->guestAttendance,
         ]);
 
-        return new CarouselResource(true, 'Gambar berhasil ditambahkan ke table carousels!', $carousel);
+        return new CarouselResource(true, 'Berhasil menambahkan data attendance!', $carousel);
     }
 
+
+    
     /**
      * show
      *
@@ -60,6 +94,6 @@ class CarouselController extends Controller
     {
         $carousel = Carousel::find($id);
 
-        return new CarouselResource(true, 'Detail Carousel berhasil ditemukan!', $carousel);
+        return new CarouselResource(true, 'Detail carousel berhasil ditemukan!', $carousel);
     }
 }
