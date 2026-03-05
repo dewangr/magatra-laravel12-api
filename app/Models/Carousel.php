@@ -13,18 +13,10 @@ class Carousel extends Model
      * @var array
      */
     protected $fillable = [
-        'image',
+        'ownerName',
+        'ceremonyType',
+        'guestName',
+        'guestMessage',
+        'guestAttendance',
     ];
-
-      /**
-     * image
-     *
-     * @return Attribute
-     */
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($image) => url('/storage/carousels/' . $image),
-        );
-    }
 }
