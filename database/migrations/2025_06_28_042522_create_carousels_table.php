@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carousels', function (Blueprint $table) {
-            $table->id();
-            $table->string('image');
+            $table->id('id');
+            $table->string('ownerName');
+            $table->enum('ceremonyType', ['0', '1', '2'])->default('0'); // 0: Pawiwahan, 1: Mepandes, 2: Tigabulanan
+            $table->string('guestName');
+            $table->text('guestMessage');
+            $table->enum('guestAttendance', ['0', '1', '2'])->nullable();
             $table->timestamps();
         });
     }
